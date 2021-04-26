@@ -1,13 +1,14 @@
-package eu.tribusmc.tribusgiveaways.reward;
+package eu.tribusmc.tribusgiveaways.objects;
 
 import eu.tribusmc.tribusgiveaways.WinnerPlace;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class RewardHolder implements ConfigurationSerializable, Cloneable {
+public class Winner implements ConfigurationSerializable, Cloneable {
 
 
     private Player p;
@@ -15,7 +16,7 @@ public class RewardHolder implements ConfigurationSerializable, Cloneable {
     private WinnerPlace winnerPlace;
 
 
-    public RewardHolder(Player paramPlayer, WinnerPlace winnerPlace) {
+    public Winner(Player paramPlayer, WinnerPlace winnerPlace) {
         this.p = paramPlayer;
         this.pUUID = p.getUniqueId();
         this.winnerPlace = winnerPlace;
@@ -43,8 +44,16 @@ public class RewardHolder implements ConfigurationSerializable, Cloneable {
         return winnerPlace;
     }
 
+
+
     @Override
     public Map<String, Object> serialize() {
-        return null;
+        Map<String, Object> serialized = new HashMap<>();
+
+        serialized.put("player", p.getName());
+        serialized.put("UUID", pUUID.toString());
+        serialized.put("winnerPlace", winnerPlace.name());
+
+        return serialized;
     }
 }

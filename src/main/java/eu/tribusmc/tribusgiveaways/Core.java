@@ -1,21 +1,25 @@
 package eu.tribusmc.tribusgiveaways;
 
 import eu.tribusmc.tribusgiveaways.config.DataConfig;
-import eu.tribusmc.tribusgiveaways.reward.RewardHolder;
-import eu.tribusmc.tribusgiveaways.reward.RewardHolderCollector;
+import eu.tribusmc.tribusgiveaways.listener.PlayerJoinListener;
+import eu.tribusmc.tribusgiveaways.objects.Winner;
+import eu.tribusmc.tribusgiveaways.storage.RewardCollector;
+import eu.tribusmc.tribusgiveaways.storage.WinnerCollector;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public final class Core extends JavaPlugin {
 
 
-    private RewardHolderCollector rewardHolderCollector;
+    private WinnerCollector winnerCollector;
+    private RewardCollector rewardCollector;
     private DataConfig dataConfig;
 
 
+
+    static {
+        ConfigurationSerialization.registerClass(Winner.class);
+    }
 
     @Override
     public void onEnable() {
@@ -23,9 +27,10 @@ public final class Core extends JavaPlugin {
         dataConfig.reloadCustomConfig();
 
 
-        rewardHolderCollector = new RewardHolderCollector(this);
+        winnerCollector = new WinnerCollector(this);
+        rewardCollector = new RewardCollector(this);
 
-
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
     }
 
     @Override
@@ -39,7 +44,11 @@ public final class Core extends JavaPlugin {
     }
 
 
+    public WinnerCollector getWinnerCollector() {
+        return winnerCollector;
+    }
 
-
-
+    public WinnerCollector getRewardCollector() {
+        return winnerCollector;
+    }
 }

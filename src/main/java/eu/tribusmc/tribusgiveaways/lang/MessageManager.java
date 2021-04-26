@@ -1,6 +1,5 @@
 package eu.tribusmc.tribusgiveaways.lang;
 
-import com.sun.istack.internal.NotNull;
 import eu.tribusmc.tribusgiveaways.Core;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,7 +36,7 @@ public class MessageManager {
      */
 
 
-    public List<String> getMessage(@NotNull String key) {
+    public List<String> getMessage(String key) {
         return messages.get(key);
     }
 
@@ -48,7 +47,7 @@ public class MessageManager {
      * @param key
      */
 
-    public void sendMessage(@NotNull Player p, @NotNull String key) {
+    public void sendMessage(Player p, String key) {
 
         if (getMessage(key) == null) {
             core.getLogger().info("§c" + key + " existerar inte i config.yml.");
@@ -69,7 +68,7 @@ public class MessageManager {
      * @param key
      */
 
-    public void sendMessage(@NotNull CommandSender sender, @NotNull String key) {
+    public void sendMessage( CommandSender sender, String key) {
 
         if (getMessage(key) == null) {
             core.getLogger().info("§c" + key + " existerar inte i config.yml.");
