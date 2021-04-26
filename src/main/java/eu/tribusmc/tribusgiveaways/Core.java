@@ -1,5 +1,6 @@
 package eu.tribusmc.tribusgiveaways;
 
+import eu.tribusmc.tribusgiveaways.commands.GiveawayCommand;
 import eu.tribusmc.tribusgiveaways.config.DataConfig;
 import eu.tribusmc.tribusgiveaways.listener.PlayerJoinListener;
 import eu.tribusmc.tribusgiveaways.objects.Winner;
@@ -10,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Core extends JavaPlugin {
 
+
+    public static Core i;
 
     private WinnerCollector winnerCollector;
     private RewardCollector rewardCollector;
@@ -23,6 +26,7 @@ public final class Core extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        i = this;
         dataConfig = new DataConfig(this);
         dataConfig.reloadCustomConfig();
 
@@ -31,12 +35,18 @@ public final class Core extends JavaPlugin {
         rewardCollector = new RewardCollector(this);
 
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+
+        new GiveawayCommand();
     }
 
     @Override
     public void onDisable() {
 
     }
+
+
+
+
 
 
     public DataConfig getDataConfig() {
@@ -48,7 +58,7 @@ public final class Core extends JavaPlugin {
         return winnerCollector;
     }
 
-    public WinnerCollector getRewardCollector() {
-        return winnerCollector;
+    public RewardCollector getRewardCollector() {
+        return rewardCollector;
     }
 }
