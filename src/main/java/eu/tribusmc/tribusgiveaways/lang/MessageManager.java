@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MessageManager {
 
@@ -14,14 +15,16 @@ public class MessageManager {
      * @Author Scarmo
      */
 
-    private final HashMap<String, String> messages;
-
+    private final HashMap<String, List<String>> messages;
+    private final Core core;
 
     public MessageManager(Core core) {
+
+        this.core = core;
         messages = new HashMap<>();
 
         for (String key : core.getConfig().getConfigurationSection("lang").getKeys(false)) {
-            messages.put(key, core.getConfig().getString("lang." + key));
+            messages.put(key, core.getConfig().getStringList("lang." + key));
         }
     }
 
@@ -34,7 +37,7 @@ public class MessageManager {
      */
 
 
-    public String getMessage(@NotNull String key) {
+    public List<String> getMessage(@NotNull String key) {
         return messages.get(key);
     }
 
@@ -46,7 +49,16 @@ public class MessageManager {
      */
 
     public void sendMessage(@NotNull Player p, @NotNull String key) {
-        p.sendMessage(getMessage(key));
+
+        if (getMessage(key) == null) {
+            core.getLogger().info("§c" + key + " existerar inte i config.yml.");
+            return;
+        }
+
+        for (String line : getMessage(key)) {
+            p.sendMessage(line.replace('&', '§'));
+        }
+
     }
 
 
@@ -58,7 +70,16 @@ public class MessageManager {
      */
 
     public void sendMessage(@NotNull CommandSender sender, @NotNull String key) {
-        sender.sendMessage(getMessage(key));
+
+        if (getMessage(key) == null) {
+            core.getLogger().info("§c" + key + " existerar inte i config.yml.");
+            return;
+        }
+
+        for (String line : getMessage(key)) {
+            sender.sendMessage(line.replace('&', '§'));
+        }
+
     }
 
 }
